@@ -35,4 +35,28 @@ public class UserService {
         DBUtil util = new DBUtil();
         return util.getAdmins();
     }
+    
+    @WebMethod(operationName = "deleteUser")
+    public boolean deleteUser(@WebParam(name = "userId") int userId){
+        DBUtil util = new DBUtil();
+        return util.deleteUser(userId);
+    }
+    
+    @WebMethod(operationName = "getAdmin")
+    public User getAdmin(@WebParam(name = "userId") int userId){
+        DBUtil util = new DBUtil();
+        return util.getAdmin(userId);
+    }
+    
+    @WebMethod(operationName = "updateAdmin")
+    public boolean updateAdmin(@WebParam(name = "admin") User admin){
+        DBUtil util = new DBUtil();
+        return util.updateAdmin(admin);
+    }
+    
+    @WebMethod(operationName = "getCustomers")
+    public List<User> getCustomers(){
+        DBUtil util = new DBUtil();
+        return util.getCustomers();
+    }
 }
