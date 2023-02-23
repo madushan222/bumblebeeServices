@@ -4,6 +4,7 @@
  */
 package shanlk;
 
+import java.util.List;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -27,5 +28,11 @@ public class UserService {
     public boolean addUser(@WebParam(name = "user") User user){
         DBUtil util = new DBUtil();
         return util.addUser(user);
+    }
+    
+    @WebMethod(operationName = "getAdmins")
+    public List<User> getAdmins(){
+        DBUtil util = new DBUtil();
+        return util.getAdmins();
     }
 }

@@ -10,7 +10,7 @@ package shanlk;
  */
 public class User {
     private String fName,mName,lName,nic,dob,address1,address2,address3,email,userType,username,password;
-    private int mobile;
+    private int mobile,userId;
 
     public User() {
         this.fName = "";
@@ -26,9 +26,10 @@ public class User {
         this.username = "";
         this.password = "";
         this.mobile = 0;
+        this.userId = 0;
     }
     
-    public User(String fName, String mName, String lName, String nic, String dob, String address1, String address2, String address3, String email, String userType, String username, String password, int mobile) {
+    public User(String fName, String mName, String lName, String nic, String dob, String address1, String address2, String address3, String email, String userType, String username, String password, int mobile, int userId) {
         this.fName = fName;
         this.mName = mName;
         this.lName = lName;
@@ -42,6 +43,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.mobile = mobile;
+        this.userId = userId;
     }
 
     public String getfName() {
@@ -146,6 +148,14 @@ public class User {
 
     public void setMobile(int mobile) {
         this.mobile = mobile;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
     
     

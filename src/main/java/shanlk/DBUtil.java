@@ -56,35 +56,34 @@ public class DBUtil {
        return lg;
    }
    
-//    public List<Admin> getAdmins(){
-//       List<Admin> admins = new ArrayList<>();
-//        try{
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-//            Statement statement = conn.createStatement();
-//            
-//            ResultSet resultSet = statement.executeQuery("SELECT * FROM user WHERE userType = 'ADMIN'");
-//            
-//            while(resultSet.next())
-//            {
-//                Admin adm = new Admin();
-//                adm.setUserId(resultSet.getInt("userId"));
-//                adm.setfName(resultSet.getString("fName"));
-//                adm.setfName(resultSet.getString("fName"));
-//                adm.setLname(resultSet.getString("lName"));
-//                adm.setDob(resultSet.getString("dob"));
-//                adm.setEmail(resultSet.getString("email"));
-//                adm.setMobile(resultSet.getInt("mobile"));
-//                adm.setNic(resultSet.getString("password"));
-//                adm.setBranchId(resultSet.getInt("branchId"));
-//                admins.add(adm);
-//            }
-//        }catch(ClassNotFoundException | SQLException e){
-//            System.out.print(e.getMessage());
-//        }
-//        
-//        return admins;
-//   }
+    public List<User> getAdmins(){
+       List<User> admins = new ArrayList<>();
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM user WHERE userType = 'A'");
+            
+            while(resultSet.next())
+            {
+                User adm = new User();
+                adm.setUserId(resultSet.getInt("userId"));
+                adm.setfName(resultSet.getString("fName"));
+                adm.setmName(resultSet.getString("fName"));
+                adm.setlName(resultSet.getString("lName"));
+                adm.setDob(resultSet.getString("dob"));
+                adm.setNic(resultSet.getString("nic"));
+                adm.setEmail(resultSet.getString("email"));
+                adm.setMobile(resultSet.getInt("mobile"));
+                admins.add(adm);
+            }
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+        
+        return admins;
+   }
 //
 //   public boolean deleteUser(int userId){
 //       int rowAffected = 0;
