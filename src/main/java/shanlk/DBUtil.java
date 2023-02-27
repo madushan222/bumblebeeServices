@@ -187,6 +187,189 @@ public class DBUtil {
         
         return customers;
    }
+   
+    public boolean addCategory(Category category){
+       int rowAffected = 0;
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            rowAffected = statement.executeUpdate("INSERT INTO category (name,status,added_date) VALUES ('"+category.getName()+"','"+category.getStatus()+"','"+category.getAdded_date()+"')");
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+       return rowAffected > 0;
+   }
+    
+    public List<Category> getCategories(){
+       List<Category> categories = new ArrayList<>();
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM category");
+            
+            while(resultSet.next())
+            {
+                Category cat = new Category();
+                cat.setCat_id(resultSet.getInt("cat_id"));
+                cat.setName(resultSet.getString("name"));
+                cat.setStatus(resultSet.getString("status"));
+                cat.setAdded_date(resultSet.getString("added_date"));
+                categories.add(cat);
+            }
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+        
+        return categories;
+   }
+    
+    public boolean deleteCategory(int cat_id){
+       int rowAffected = 0;
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            rowAffected = statement.executeUpdate("DELETE FROM category WHERE cat_id = '"+cat_id+"'");
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+       return rowAffected > 0;
+   }
+    
+    public Category getCategory(int cat_id){
+       Category cat = new Category();
+         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM category WHERE cat_id = '"+cat_id+"'");
+            
+            resultSet.next();
+            cat.setCat_id(resultSet.getInt("cat_id"));
+            cat.setName(resultSet.getString("name"));
+                    
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+        
+        return cat;
+   }
+    
+    public boolean updateCategory(Category cat){
+       int rowAffected = 0;
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            rowAffected = statement.executeUpdate("UPDATE category SET name = '"+cat.getName()+"' WHERE cat_id = '"+cat.getCat_id()+"'");
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+       return rowAffected > 0;
+   }
+    
+    public boolean addBrand(Brand brand){
+       int rowAffected = 0;
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            rowAffected = statement.executeUpdate("INSERT INTO brand (cat_id,name,status) VALUES ('"+brand.getCat_id()+"','"+brand.getName()+"','"+brand.getStatus()+"')");
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+       return rowAffected > 0;
+   }
+    
+    public List<Brand> getBrands(){
+       List<Brand> brands = new ArrayList<>();
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            
+            ResultSet resultSet = statement.executeQuery("SELECT brand.*,category.name as cat_name FROM brand,category WHERE brand.cat_id = category.cat_id");
+            
+            while(resultSet.next())
+            {
+                Brand brand = new Brand();
+                brand.setBrand_id(resultSet.getInt("brand_id"));
+                brand.setCat_id(resultSet.getInt("cat_id"));
+                brand.setName(resultSet.getString("name"));
+                brand.setCat_name(resultSet.getString("cat_name"));
+                brand.setStatus(resultSet.getString("status"));
+                brands.add(brand);
+            }
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+        
+        return brands;
+   }
+    
+    public boolean deleteBrand(int brand_id){
+       int rowAffected = 0;
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            rowAffected = statement.executeUpdate("DELETE FROM brand WHERE brand_id = '"+brand_id+"'");
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+       return rowAffected > 0;
+   }
+    
+    public Brand getBrand(int brand_id){
+       Brand brand = new Brand();
+         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM brand WHERE brand_id = '"+brand_id+"'");
+            
+            resultSet.next();
+            brand.setBrand_id(resultSet.getInt("brand_id"));
+            brand.setCat_id(resultSet.getInt("cat_id"));
+            brand.setName(resultSet.getString("name"));
+                    
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+        
+        return brand;
+   }
+    
+    public boolean updateBrand(Brand brand){
+       int rowAffected = 0;
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            rowAffected = statement.executeUpdate("UPDATE brand SET cat_id = '"+brand.getCat_id()+"', name = '"+brand.getName()+"' WHERE brand_id = '"+brand.getBrand_id()+"'");
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+       return rowAffected > 0;
+   }
+    
+    public boolean updateStatus(Integer id, String status, String table, String field){
+       int rowAffected = 0;
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            rowAffected = statement.executeUpdate("UPDATE "+table+" SET status = '"+status+"' WHERE "+field+" = '"+id+"'");
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+       return rowAffected > 0;
+   }
 //   
 //    public Customer getCustomer(int userId){
 //       Customer customer = new Customer();
