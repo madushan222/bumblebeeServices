@@ -93,4 +93,42 @@ public class InventoryService {
         return util.updateStatus(id, status, table, field);
     }
     
+    //Product Manipulate Functions
+    @WebMethod(operationName = "addProduct")
+    public boolean addProduct(@WebParam(name = "product") Product product){
+        DBUtil util = new DBUtil();
+        return util.addProduct(product);
+    }
+    
+    @WebMethod(operationName = "getProducts")
+    public List<Product> getProducts(){
+        DBUtil util = new DBUtil();
+        return util.getProducts();
+    }
+    
+    @WebMethod(operationName = "deleteProduct")
+    public boolean deleteProduct(@WebParam(name = "product_id") int product_id){
+        DBUtil util = new DBUtil();
+        return util.deleteProduct(product_id);
+    }
+    
+    @WebMethod(operationName = "getProduct")
+    public Product getProduct(@WebParam(name = "product_id") int product_id){
+        DBUtil util = new DBUtil();
+        return util.getProduct(product_id);
+    }
+    
+    @WebMethod(operationName = "updateProduct")
+    public boolean updateProduct(@WebParam(name = "product") Product product){
+        DBUtil util = new DBUtil();
+        return util.updateProduct(product);
+    }
+    
+    @WebMethod(operationName = "getBrandsByCatId")
+    public List<Brand> getBrandsByCatId(int cat_id){
+        DBUtil util = new DBUtil();
+        return util.getBrandsByCatId(cat_id);
+    }
+
+    
 }
