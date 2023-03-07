@@ -9,23 +9,26 @@ package shanlk;
  * @author shanr
  */
 public class Product {
-    String name,status,cat_name,brand_name;
+    String name,status,cat_name,brand_name,added_date;
     Integer product_id, brand_id, cat_id;
     
     public Product() {
         this.name = "";
         this.status = "";
         this.cat_name = "";
-         this.brand_name = "";
+        this.brand_name = "";
+        this.added_date = "";
         this.product_id = 0;
         this.brand_id = 0;
         this.cat_id = 0;
     }
         
-    public Product(String name, String status, String cat_name, String brand_name, Integer product_id, Integer brand_id, Integer cat_id) {
+    public Product(String name, String status, String cat_name, String brand_name, String added_date, Integer product_id, Integer brand_id, Integer cat_id) {
         this.name = name;
         this.status = status;
         this.cat_name = cat_name;
+        this.brand_name = brand_name;
+        this.added_date = added_date;
         this.product_id = product_id;
         this.brand_id = brand_id;
         this.cat_id = cat_id;
@@ -85,6 +88,14 @@ public class Product {
 
     public void setCat_id(Integer cat_id) {
         this.cat_id = cat_id;
+    }
+
+    public String getAdded_date() {
+        return added_date;
+    }
+
+    public void setAdded_date(String added_date) {
+        this.added_date = added_date;
     }
     
     
