@@ -35,4 +35,10 @@ public class LoanService {
         DBUtil util = new DBUtil();
         return util.getLoanShedule(loan_id);
     }
+    
+    @WebMethod(operationName = "getUserLoanTot")
+    public float getUserLoanTot(int userId){
+        DBUtil util = new DBUtil();
+        return util.getUserLoanTot(userId);
+    }
 }

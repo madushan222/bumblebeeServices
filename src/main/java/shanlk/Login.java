@@ -10,17 +10,20 @@ package shanlk;
  */
 public class Login {
        private String userName,password,userType;
+       int userID;
     
     public Login() {
         this.userName = "";
         this.password = "";
         this.userType = "";
+        this.userID = 0;
     }
 
-    public Login(String userName, String password, String userType) {
+    public Login(String userName, String password, String userType, int userID) {
         this.userName = userName;
         this.password = password;
         this.userType = userType;
+        this.userID = userID;
     }
 
     public String getUserName() {
@@ -46,4 +49,14 @@ public class Login {
     public void setUserType(String userType) {
         this.userType = userType;
     }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+    
+    
 }

@@ -17,6 +17,7 @@ public class Report {
         this.pay_date = "";
         this.loan_amount = 0;
         this.pay_amount = 0;
+
     }
     
     
@@ -25,6 +26,7 @@ public class Report {
         this.pay_date = pay_date;
         this.loan_amount = loan_amount;
         this.pay_amount = pay_amount;
+
     }
 
     public String getCus_name() {

@@ -36,4 +36,28 @@ public class ReportService {
         DBUtil util = new DBUtil();
         return util.getCollectionDateRange(loanId,fromDate,toDate);
     }
+    
+    @WebMethod(operationName = "getTotalProducts")
+    public int getTotalProducts(){
+        DBUtil util = new DBUtil();
+        return util.getTotalProducts();
+    }
+    
+    @WebMethod(operationName = "getTotalCustomers")
+    public int getTotalCustomers(){
+        DBUtil util = new DBUtil();
+        return util.getTotalCustomers();
+    }
+    
+    @WebMethod(operationName = "getTotalLoans")
+    public int getTotalLoans(){
+        DBUtil util = new DBUtil();
+        return util.getTotalLoans();
+    }
+    
+    @WebMethod(operationName = "getDayCollection")
+    public float getDayCollection(String date){
+        DBUtil util = new DBUtil();
+        return util.getDayCollection(date);
+    }
 }
