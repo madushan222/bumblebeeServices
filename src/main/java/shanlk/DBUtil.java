@@ -45,6 +45,7 @@ public class DBUtil {
             if(resultSet.next())
             {
               lg.setUserType(resultSet.getString("userType"));
+              lg.setUserID(resultSet.getInt("userId"));
             }
             else
             {
@@ -377,7 +378,7 @@ public class DBUtil {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
             Statement statement = conn.createStatement();
-            rowAffected = statement.executeUpdate("INSERT INTO product (brand_id,cat_id,name,status) VALUES ('"+product.getBrand_id()+"','"+product.getCat_id()+"','"+product.getName()+"','"+product.getStatus()+"')");
+            rowAffected = statement.executeUpdate("INSERT INTO product (brand_id,cat_id,name,status,added_date) VALUES ('"+product.getBrand_id()+"','"+product.getCat_id()+"','"+product.getName()+"','"+product.getStatus()+"','"+product.getAdded_date()+"')");
         }catch(ClassNotFoundException | SQLException e){
             System.out.print(e.getMessage());
         }
@@ -402,6 +403,7 @@ public class DBUtil {
                 product.setCat_name(resultSet.getString("cat_name"));
                 product.setBrand_name(resultSet.getString("brand_name"));
                 product.setStatus(resultSet.getString("status"));
+                product.setAdded_date(resultSet.getString("added_date"));
                 products.add(product);
             }
         }catch(ClassNotFoundException | SQLException e){
@@ -480,6 +482,233 @@ public class DBUtil {
         }
         
         return brands;
+   }
+   
+    public List<Loan> getLoans(int user_id){
+       List<Loan> loans = new ArrayList<>();
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            
+            ResultSet resultSet = statement.executeQuery("SELECT loan.*,product.name as product_name,user.fName,user.mName,user.lName FROM loan,product,user WHERE user.userId = loan.user_id AND loan.product_id = product.product_id AND loan.user_id = '"+user_id+"'");
+            
+            while(resultSet.next())
+            {
+                Loan loan = new Loan();
+                loan.setLoan_id(resultSet.getInt("loan_id"));
+                loan.setCustomer_name(resultSet.getString("fName")+" "+resultSet.getString("mName")+" "+resultSet.getString("lName"));
+                loan.setStart_date(resultSet.getString("start_date"));
+                loan.setEnd_date(resultSet.getString("end_date"));
+                loan.setStatus(resultSet.getString("status"));
+                loan.setProduct_name(resultSet.getString("product_name"));
+                loan.setLoan_amount(resultSet.getString("amount"));
+                loans.add(loan);
+            }
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+        
+        return loans;
+   }
+    
+    public List<LoanShedule> getLoanShedule(int loan_id){
+       List<LoanShedule> shedules = new ArrayList<>();
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM loanshedule");
+            
+            while(resultSet.next())
+            {
+                LoanShedule shedule = new LoanShedule();
+                shedule.setDue_date(resultSet.getString("due_date"));
+                shedule.setPay_date(resultSet.getString("pay_date"));
+                shedule.setIns_amount(resultSet.getFloat("ins_amount"));
+                shedule.setPaid_amount(resultSet.getFloat("paid_amount"));
+                shedule.setStatus(resultSet.getString("status"));
+                shedules.add(shedule);
+            }
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+        
+        return shedules;
+   }
+    
+    public Report getCollectionDateRange(int loan_id, String fromDate, String toDate){
+        
+         Report report = new Report();
+         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            
+             ResultSet resultSet = statement.executeQuery("SELECT SUM(paid_amount) as paid_amount, MAX(pay_date) as pay_date  FROM loanshedule WHERE pay_date >= '"+fromDate+"' AND pay_date <= '"+toDate+"' AND loan_id = '"+loan_id+"'");
+            
+            resultSet.next();
+            report.setPay_date(resultSet.getString("pay_date"));
+            report.setPay_amount(resultSet.getFloat("paid_amount"));
+                    
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+        
+        return report;
+   }
+    
+       
+    public List<Loan> getAllLoans(){
+       List<Loan> loans = new ArrayList<>();
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            
+            ResultSet resultSet = statement.executeQuery("SELECT loan.*,product.name as product_name,user.fName,user.mName,user.lName FROM loan,product,user WHERE user.userId = loan.user_id AND loan.product_id = product.product_id");
+            
+            while(resultSet.next())
+            {
+                Loan loan = new Loan();
+                loan.setLoan_id(resultSet.getInt("loan_id"));
+                loan.setCustomer_name(resultSet.getString("fName")+" "+resultSet.getString("mName")+" "+resultSet.getString("lName"));
+                loan.setStart_date(resultSet.getString("start_date"));
+                loan.setEnd_date(resultSet.getString("end_date"));
+                loan.setStatus(resultSet.getString("status"));
+                loan.setProduct_name(resultSet.getString("product_name"));
+                loan.setLoan_amount(resultSet.getString("amount"));
+                loans.add(loan);
+            }
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+        
+        return loans;
+   }
+    
+    public int getTotalProducts(){
+        
+         int tot = 0;
+         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            
+             ResultSet resultSet = statement.executeQuery("SELECT COUNT(product_id) as product_count FROM product");
+            
+            resultSet.next();
+            tot = resultSet.getInt("product_count");
+                    
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+        
+        return tot;
+   }
+    
+    public int getTotalCustomers(){
+        
+         int tot = 0;
+         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            
+             ResultSet resultSet = statement.executeQuery("SELECT COUNT(userId) as customer_count FROM user WHERE userType = 'C'");
+            
+            resultSet.next();
+            tot = resultSet.getInt("customer_count");
+                    
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+        
+        return tot;
+   }
+        
+    public int getTotalLoans(){
+        
+         int tot = 0;
+         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            
+             ResultSet resultSet = statement.executeQuery("SELECT COUNT(loan_id) as loan_count FROM loan");
+            
+            resultSet.next();
+            tot = resultSet.getInt("loan_count");
+                    
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+        
+        return tot;
+   }
+    
+    public float getDayCollection(String date){
+        
+         float tot = 0;
+         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            
+             ResultSet resultSet = statement.executeQuery("SELECT SUM(paid_amount) as paid_amount FROM loanshedule WHERE pay_date='"+date+"'");
+            
+            resultSet.next();
+            tot = resultSet.getFloat("paid_amount");
+                    
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+        
+        return tot;
+   }
+    
+    public float getUserLoanTot(int userId){
+        
+         float tot = 0;
+         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            
+             ResultSet resultSet = statement.executeQuery("SELECT SUM(amount) as loan_tot FROM loan WHERE user_id='"+userId+"'");
+            
+            resultSet.next();
+            tot = resultSet.getFloat("loan_tot");
+                    
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+        
+        return tot;
+   }
+    
+    public boolean checkUserAlreadyRegistered(String nic){
+        
+         int user_count = 0;
+         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement statement = conn.createStatement();
+            
+            ResultSet resultSet = statement.executeQuery("SELECT COUNT(userId) as user_count FROM user WHERE nic='"+nic+"'");
+            
+            resultSet.next();
+            user_count = resultSet.getInt("user_count");
+                    
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.print(e.getMessage());
+        }
+        
+         if(user_count > 0)
+            return true;
+         else
+            return false;
    }
 //   
 //    public Customer getCustomer(int userId){

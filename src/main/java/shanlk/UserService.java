@@ -59,4 +59,10 @@ public class UserService {
         DBUtil util = new DBUtil();
         return util.getCustomers();
     }
+    
+    @WebMethod(operationName = "checkUserAlreadyRegistered")
+    public boolean checkUserAlreadyRegistered(String nic){
+        DBUtil util = new DBUtil();
+        return util.checkUserAlreadyRegistered(nic);
+    }
 }
